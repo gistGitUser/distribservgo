@@ -1,0 +1,1 @@
+GIT_SSH_COMMAND='ssh -i /home/mos/.ssh/id_rsa -o IdentitiesOnly=yes' git push
