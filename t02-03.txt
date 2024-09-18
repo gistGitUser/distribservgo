@@ -1,0 +1,59 @@
+
+go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+
+Update your PATH so that the protoc compiler can find the plugins:
+
+export PATH="$PATH:$(go env GOPATH)/bin"
+
+The Log Is a Powerful Tool
+
+Once
+the filesystem has safely written the changes to the journal,
+it then applies those changes to the data files. Logging to
+the journal is simple and fast, so
+there’s little chance of losing data. Even if your computer crashed
+before ext had finished updating the disk files, then on the next boot,
+the filesystem would process the data in the journal to complete its
+updates.
+
+Database developers, like PostgreSQL, use the same technique to make
+their systems durable: they record changes to a log, called a
+write-ahead log (WAL), and later process the WAL to apply the changes
+to their database’s data files.
+
+Database developers use the WAL for replication, too. Instead of
+writing the logs to a disk, they write the logs over the network to
+its replicas. The replicas apply the changes to their own data copies,
+and eventually they all end up at the same state.
+
+How Logs Work
+A log is an append-only sequence of records
+
+So we split the log into a list of segments. When the log grows too big,
+we free up disk space by deleting old segments whose data we’ve
+already processed or archived.
+
+There’s always one special segment among the list of segments,
+and that’s the active segment. We call it the active segment because
+it’s the only segment we actively write to.
+
+When we’ve filled the active segment, we create a new
+segment and make it the active segment.
+
+Each segment comprises a store file and an index file. The segment’s store
+file is where we store the record data; we continually append records to this
+file. The segment’s index file is where we index each record in the store file.
+The index file speeds up reads because it maps record offsets to their position
+in the store file.
+
+Build a Log
+
+• Record — the data stored in our log.
+• Store — the file we store records in.
+• Index — the file we store index entries in.
+• Segment — the abstraction that ties a store and an index together.
+• Log — the abstraction that ties all the segments together.
+
+
+

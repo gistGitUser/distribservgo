@@ -1,0 +1,11 @@
+1. https://auth0.com/blog/beating-json-performance-with-protobuf
+2. https://github.com/protocolbuffers/protobuf/releases
+
+sudo apt install golang-goprotobuf-dev
+
+//на случай если не получается найти ProtoReflect()
+go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+
+https://en.wikipedia.org/wiki/Memory-mapped_file
+
+https://github.com/igor-baiborodine/distributed-services-with-go-workshop

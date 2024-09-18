@@ -1,0 +1,21 @@
+//specify that we’re using proto3 syntax
+syntax = "proto3";
+/*
+Then we specify a package name for two reasons:
+because this protobuf package name is used as the package name in the
+generated Go code and because it prevents name clashes between protocol
+message types that have the same name.
+ */
+package log.v1;
+
+option go_package = "godistrserv/api/log_v1";
+/*
+with protobuf you put the name of the field on right followed by
+its name (with an additional
+field ID).
+Following
+ */
+message Record {
+  bytes value = 1;
+  uint64 offset = 2;
+}
