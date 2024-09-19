@@ -36,18 +36,29 @@ func newStore(f *os.File) (*store, error) {
 	}, nil
 }
 
+// Append
+// n - число записанных байт += lenWidth
+// pos - size
 func (s *store) Append(p []byte) (n uint64, pos uint64, err error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	pos = s.size
+
+	//сначала в буфер записывается размер строки
+	//в бинарном виде, т.е. в данном случае записывается 8 байт
+	//которые потом будут считываться как число
+	//и у нас будет информация о том сколько данных нам нужно считать
+	//или какой размер имеет следующая запись
 	if err := binary.Write(s.buf, enc, uint64(len(p))); err != nil {
 		return 0, 0, err
 	}
 
+	//затем пишем уже сами данные
 	w, err := s.buf.Write(p)
 	if err != nil {
 		return 0, 0, err
 	}
+	//после записи получаем размер лога
 	w += lenWidth
 	s.size += uint64(w)
 	return uint64(w), pos, nil
@@ -59,10 +70,14 @@ func (s *store) Read(pos uint64) ([]byte, error) {
 	if err := s.buf.Flush(); err != nil {
 		return nil, err
 	}
+
+	//получаем размер в бинарном виде и затем
+	//превращаем его в int64
 	size := make([]byte, lenWidth)
 	if _, err := s.File.ReadAt(size, int64(pos)); err != nil {
 		return nil, err
 	}
+	//после считываем запись в лог
 	b := make([]byte, enc.Uint64(size))
 	if _, err := s.File.ReadAt(b, int64(pos+lenWidth)); err != nil {
 		return nil, err
