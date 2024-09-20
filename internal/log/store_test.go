@@ -19,7 +19,6 @@ func TestStoreAppendRead(t *testing.T) {
 	require.NoError(t, err)
 	testAppend(t, s)
 	testRead(t, s)
-	//stop 29 page
 	testReadAt(t, s)
 	s, err = newStore(f)
 	require.NoError(t, err)
@@ -46,6 +45,11 @@ func testRead(t *testing.T, s *store) {
 }
 func testReadAt(t *testing.T, s *store) {
 	t.Helper()
+	/*
+		ReadAt считывает данные в буфер, который заранее
+		выделен, т.е. если выделен буфер на 8 байт, то ReadAt
+		считает данные на 8 байт в него
+	*/
 	for i, off := uint64(1), int64(0); i < 4; i++ {
 		b := make([]byte, lenWidth)
 		n, err := s.ReadAt(b, off)
@@ -60,4 +64,42 @@ func testReadAt(t *testing.T, s *store) {
 		require.Equal(t, int(size), n)
 		off += int64(n)
 	}
+}
+
+/*
+Тут особенность в том, что запись в файл идёт
+либо при чтении, либо при закрытии, поэтому
+before_size будет 0, а after_size > на размер записываемого буфера
+*/
+func TestStoreClose(t *testing.T) {
+	f, err := os.CreateTemp("", "store_close_test")
+	require.NoError(t, err)
+	defer os.Remove(f.Name())
+	s, err := newStore(f)
+	require.NoError(t, err)
+	_, _, err = s.Append(write)
+	require.NoError(t, err)
+	f, beforeSize, err := openFile(f.Name())
+	require.NoError(t, err)
+	err = s.Close()
+	require.NoError(t, err)
+	_, afterSize, err := openFile(f.Name())
+	require.NoError(t, err)
+	require.True(t, afterSize > beforeSize)
+}
+
+func openFile(name string) (file *os.File, size int64, err error) {
+	f, err := os.OpenFile(
+		name,
+		os.O_RDWR|os.O_CREATE|os.O_APPEND,
+		0644,
+	)
+	if err != nil {
+		return nil, 0, err
+	}
+	fi, err := f.Stat()
+	if err != nil {
+		return nil, 0, err
+	}
+	return f, fi.Size(), nil
 }

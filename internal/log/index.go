@@ -1,6 +1,7 @@
 package log
 
 import (
+	//уод нормально не импортировался поэтому пришлось пакет вручную перенести
 	//github.com/tysonmote/gommap
 	"godistrserv/pkg/gommap"
 	"io"
@@ -33,6 +34,7 @@ func newIndex(f *os.File, c Config) (*index, error) {
 	); err != nil {
 		return nil, err
 	}
+
 	if idx.mmap, err = gommap.Map(
 		idx.file.Fd(),
 		gommap.PROT_READ|gommap.PROT_WRITE,
@@ -43,6 +45,10 @@ func newIndex(f *os.File, c Config) (*index, error) {
 	return idx, nil
 }
 
+// Close makes sure the memory-mapped file has
+// synced its data to the persisted
+// file and that the persisted file has flushed its
+// contents to stable storage.
 func (i *index) Close() error {
 	if err := i.mmap.Sync(gommap.MS_SYNC); err != nil {
 		return err
@@ -55,6 +61,13 @@ func (i *index) Close() error {
 	}
 	return i.file.Close()
 }
+
+// Read (int64) takes in an offset and returns the associated
+// record’s position in  the store.
+//например мы хотим in 5 (6 запись)
+//т.е. pos будет  равно 60
+//соотв. потом мы получаем 4 байта сдвига
+//и 8 байт, которые укажут на позицию записи в основном файле
 
 func (i *index) Read(in int64) (out uint32, pos uint64, err error) {
 	if i.size == 0 {

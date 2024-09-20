@@ -9,6 +9,7 @@ import (
 )
 
 func TestIndex(t *testing.T) {
+	//f, err := ioutil.TempFile("temp", "index_test")
 	f, err := ioutil.TempFile(os.TempDir(), "index_test")
 	require.NoError(t, err)
 	defer os.Remove(f.Name())
@@ -19,6 +20,7 @@ func TestIndex(t *testing.T) {
 	_, _, err = idx.Read(-1)
 	require.Error(t, err)
 	require.Equal(t, f.Name(), idx.Name())
+
 	entries := []struct {
 		Off uint32
 		Pos uint64
