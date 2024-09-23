@@ -1,0 +1,34 @@
+CHAPTER 5
+Secure Your Services
+
+Secure Services in Three Steps
+Security in distributed services can be broken down into three steps:
+1. Encrypt data in-flight to protect against man-in-the-middle attacks;
+2. Authenticate to identify clients; and
+3. Authorize to determine the permissions of the identified clients.
+
+
+Encrypt In-Flight Data
+
+The process by which a client and server communicate is
+kicked off(начинают) by a TLS
+handshake. During this handshake, the client and server:
+
+1. Specify which version of TLS they’ll use;
+2. Decide which cipher suites (the set of
+   encryption algorithms) they’ll use;
+
+3. Authenticate the identity of the server via the server’s
+   private key and the certificate authority’s digital
+   signature; and
+
+4. Generate session keys for symmetric encryption
+ after the handshake is complete.
+
+ Once this handshake process is complete, the client
+  and server can communicate securely.
+
+Authenticate to Identify Clients
+
+
+86 page
