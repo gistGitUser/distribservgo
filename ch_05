@@ -30,5 +30,10 @@ handshake. During this handshake, the client and server:
 
 Authenticate to Identify Clients
 
-
 86 page
+
+ go install github.com/cloudflare/cfssl/cmd/...@latest
+whereis cfssl
+ whereis cfssljson
+
+ sudo cp
