@@ -2,6 +2,7 @@ package server
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/gorilla/mux"
 	"net/http"
 )
@@ -33,6 +34,9 @@ func NewHTTPServer(addr string) *http.Server {
 	r := mux.NewRouter()
 	r.HandleFunc("/", httpsrv.handleProduce).Methods("POST")
 	r.HandleFunc("/", httpsrv.handleConsume).Methods("GET")
+	r.HandleFunc("/get", func(writer http.ResponseWriter, request *http.Request) {
+		fmt.Fprintf(writer, "get")
+	}).Methods("GET")
 	return &http.Server{
 		Addr:    addr,
 		Handler: r,

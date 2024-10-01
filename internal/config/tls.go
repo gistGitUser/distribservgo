@@ -4,7 +4,7 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"fmt"
-	"io/ioutil"
+	"os"
 )
 
 type TLSConfig struct {
@@ -15,6 +15,10 @@ type TLSConfig struct {
 	Server        bool
 }
 
+/*
+SetupTLSConfig
+Загружает ключи и сертификат для сервера
+*/
 func SetupTLSConfig(cfg TLSConfig) (*tls.Config, error) {
 	var err error
 	tlsConfig := &tls.Config{}
@@ -29,7 +33,7 @@ func SetupTLSConfig(cfg TLSConfig) (*tls.Config, error) {
 		}
 	}
 	if cfg.CAFile != "" {
-		b, err := ioutil.ReadFile(cfg.CAFile)
+		b, err := os.ReadFile(cfg.CAFile)
 		if err != nil {
 			return nil, err
 		}
