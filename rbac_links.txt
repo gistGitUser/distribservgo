@@ -1,0 +1,56 @@
+Инвариантность, ковариантность и контравариантность на примере Python
+https://www.youtube.com/watch?v=ZSO83DS6UxA
+
+t ja3, ja4,
+https://github.com/gospider007/requests?tab=readme-ov-file
+
+
+Crafting Robust HTTP Requests: Building a Requester in Go
+https://medium.com/insiderengineering/crafting-robust-http-requests-building-a-requester-in-go-298d67dcb5c9
+
+An enhanced and lightweight http client for Golang
+https://github.com/bozd4g/go-http-client
+https://mailazy.com/blog/http-request-golang-with-best-practices/
+https://reliasoftware.com/blog/build-a-golang-http-client-with-net-http
+https://github.com/jochasinga/requests
+
+
+SCS: HTTP Session Management for Go
+https://github.com/alexedwards/scs
+
+
+Гибкая авторизация с помощью Casbin и PERM. Практический пример
+https://habr.com/ru/articles/540454/
+https://lurumad.github.io/cross-cutting-concerns-in-asp-net-core-with-meaditr
+https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/microservice-application-layer-implementation-web-api
+
+ABAC, ReBAC, Zanzibar, ALFA… How and Why Should I Implement Authorization in My APIs?
+https://www.youtube.com/watch?v=byI_Jjb0c6c
+https://www.youtube.com/watch?v=HyZQBC-KSuM
+https://www.youtube.com/watch?v=qprypVZ6Pxo
+https://habr.com/ru/articles/539778/
+https://habr.com/ru/articles/540454/
+
+casbin
+https://casbin.org/docs/abac/
+https://github.com/casbin/casbin?tab=readme-ov-file#examples
+https://casbin.org/editor/
+https://casbin.org/docs/tutorials
+
+
+
+
+resume
+https://drive.google.com/file/d/1CbVqM3rzXTEnp4Sc7feAP2oxh2iJ1kx1/view
+
+Passive DNS Capture and Monitoring Toolkit
+https://github.com/mosajjal/dnsmonster
+
+
+read
+https://github.com/Arcadian-Sky/mmcands/blob/main/internal/agent/controller/controller.go
+https://github.com/Arcadian-Sky/datakeeper
+https://github.com/Arcadian-Sky/musthave-metrics?tab=readme-ov-file
+
+
+

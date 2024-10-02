@@ -50,12 +50,42 @@ func NewGRPCServer(config *Config, opts ...grpc.ServerOption) (
 	*grpc.Server,
 	error,
 ) {
+
+	/*
+		We hook up our authenticate() interceptor to our gRPC server so that our server
+		identifies the subject of each RPC to kick off the authorization process.
+	*/
+
+	// StreamInterceptor returns a ServerOption that sets
+	//the StreamServerInterceptor for the
+	// server. Only one stream interceptor can be installed.
+
+	// StreamServerInterceptor provides a hook to intercept the execution of a streaming RPC on the server.
+	// info contains all the information of this RPC the interceptor can operate on. And handler is the
+	// service method implementation. It is the responsibility of the interceptor to invoke handler to
+	// complete the RPC.
+
+	// ChainStreamServer creates a single interceptor out of a chain of many interceptors.
+
+	// UnaryInterceptor returns a ServerOption that sets the UnaryServerInterceptor for the
+	// server. Only one unary interceptor can be installed. The construction of multiple
+	// interceptors (e.g., chaining) can be implemented at the caller.
+
+	// A ServerOption sets options such as credentials, codec and keepalive parameters, etc.
+
+	// UnaryServerInterceptor provides a hook to intercept the execution of a unary RPC on the server. info
+	// contains all the information of this RPC the interceptor can operate on. And handler is the wrapper
+	// of the service method implementation. It is the responsibility of the interceptor to invoke handler
+	// to complete the RPC.
+
 	opts = append(opts, grpc.StreamInterceptor(
 		grpc_middleware.ChainStreamServer(
 			grpc_auth.StreamServerInterceptor(authenticate),
-		)), grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(
-		grpc_auth.UnaryServerInterceptor(authenticate),
-	)))
+		),
+	),
+		grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(
+			grpc_auth.UnaryServerInterceptor(authenticate),
+		)))
 	gsrv := grpc.NewServer(opts...)
 	srv, err := newgrpcServer(config)
 	if err != nil {
@@ -63,6 +93,13 @@ func NewGRPCServer(config *Config, opts ...grpc.ServerOption) (
 	}
 	api.RegisterLogServer(gsrv, srv)
 	return gsrv, nil
+
+	/*
+		В качестве перехватчика используется grpc_auth.StreamServerInterceptor(authenticate) и
+		grpc_auth.UnaryServerInterceptor(authenticate),
+		что добавляет проверку аутентификации для всех потоковых и обычных gRPC методов.
+	*/
+
 }
 func (s *grpcServer) Produce(ctx context.Context, req *api.ProduceRequest) (
 	*api.ProduceResponse, error) {

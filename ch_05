@@ -30,10 +30,192 @@ handshake. During this handshake, the client and server:
 
 Authenticate to Identify Clients
 
-86 page
+installing tools for certificate creating
 
  go install github.com/cloudflare/cfssl/cmd/...@latest
 whereis cfssl
  whereis cfssljson
 
- sudo cp
+ sudo cp ... /usr/bin/
+
+
+certificate authority (CA)
+
+CFSSL has two tools we’ll need:
+• cfssl to sign, verify, and bundle TLS certificates and output
+   the results as JSON.
+• cfssljson to take that JSON output and split them into
+   separate key, certificate, CSR, and bundle files
+
+ CSR означает Certificate Signing Request
+ (Запрос на подпись сертификата). Это файл, который создается
+ при запросе сертификата у центра сертификации (CA). Он
+ содержит информацию о субъекте (например, о вашем сервере),
+ которую будет включать
+ в сертификат центр сертификации, а также публичный ключ.
+
+Put the following JSON into a file called ca-csr.json in
+ your test directory:
+
+{
+"CN": "My Awesome CA",
+"key": {
+"algo": "rsa",
+"size": 2048
+},
+"names": [
+{
+"C": "CA",
+"L": "ON",
+"ST": "Toronto",
+"O": "My Awesome Company",
+"OU": "CA Services"
+}
+]
+}
+
+CN stands for Common Name
+C—country
+• L—locality or municipality (such as city)
+• ST—state or province
+• O—organization
+• OU—organizational unit (such as the department
+responsible for owning the key)
+
+Create a test/ca-config.json
+ that looks like this to define the CA’s policy:
+
+ {
+ "signing": {
+ "profiles": {
+ "server": {
+ "expiry": "8760h",
+ "usages": [
+ "signing",
+ "key encipherment",
+ "server auth"
+ ]
+ },
+ "client": {
+ "expiry": "8760h",
+ "usages": [
+ "signing",
+ "key encipherment",
+ "client auth"
+ ]
+ }
+ }
+ }
+ }
+
+ configuration  file says that the CA can generate client and
+ server certificates that will expire  after a year and the
+ certificates may be used for digital signatures, encrypting
+ keys, and auth.
+
+
+Put the following JSON into a file called server-csr.json
+ in your test directory:
+
+{
+"CN": "127.0.0.1",
+"hosts": [
+"localhost",
+"127.0.0.1"
+],
+"key": {
+"algo": "rsa",
+"size": 2048
+},
+"names": [
+{
+"C": "CA",
+"L": "ON",
+"ST": "Toronto",
+"O": "My Awesome Company",
+"OU": "Distributed Services"
+}
+]
+}
+cfssl will use these configs to configure our server’s certificate. The “hosts”
+field is a list of the domain names that the certificate should be valid for.
+Since we’re running our service locally, we just need 127.0.0.1 and localhost.
+
+
+In this updated Makefile, we’ve added a CONFIG_PATH variable
+to specify where we’d like to put our generated certs
+and an init target to create that directory.
+
+CONFIG_PATH=${HOME}/.godistrserv/
+
+
+Сlient *tls.Config is set up to verify the server’s
+certificate with the client’s by setting the *tls.Config’s
+ RootCAs.
+
+• Client *tls.Config is set up to verify the server’s
+ certificate and allow the server to verify the client’s
+ certificate by setting its RootCAs and its Certificates.
+
+• Server *tls.Config is set up to verify the client’s certificate
+ and allow the client to verify the server’s certificate by
+ setting its ClientCAs, Certificate, and ClientAuth mode set to
+ tls.RequireAndVerifyCert.
+
+Authenticate the Client with Mutual TLS Authentication (94)
+
+The CN field is the important config because that’s the client’s identity—their
+username, in a sense. This is the identity we’ll store their permissions under
+for authorization.
+
+{
+  "CN": "client",
+  "hosts": [""],
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names": [
+    {
+      "C": "CA",
+      "L": "ON",
+      "ST": "Toronto",
+      "O": "My Company",
+      "OU": "Distributed Services"
+    }
+  ]
+}
+
+Your server and client now have mutual TLS authentication with both sides
+verifying that your CA vouches for their authenticity, so you know it’s your
+actual client communicating with your server without a middleman eavesdrop-
+ping. Hooray for security!
+
+Authorize with Access Control Lists
+
+In this code, we define an Authorizer type whose sole method, Authorize, defers
+to Casbin’s Enforce function. This function returns whether the given subject
+is permitted to run the given action on the given object based on the model
+and policy you configure Casbin with.
+
+func (a *Authorizer) Authorize(subject, object, action string) error {
+if !a.enforcer.Enforce(subject, object, action) {
+msg := fmt.Sprintf(
+"%s not permitted to %s to %s",
+subject,
+action,
+object,
+)
+st := status.New(codes.PermissionDenied, msg)
+return st.Err()
+}
+return nil
+}
+
+
+
+
+
+
+
+
