@@ -1,0 +1,19 @@
+Server-to-Server Service Discovery
+
+Service discovery is one of the coolest
+things about distributed services: machines automatically
+discovering other machines!
+
+Why Use Service Discovery?
+
+Service discovery is the process of figuring out how
+to connect to a service. A service discovery solution must
+keep an up-to-date list (also known as a registry) of services,
+their locations, and their health. Downstream services
+then query this registry to discover the location of upstream
+services and connect to them—for example, a web service
+discovering and connecting to its database. This way, even if
+the upstream services change (scale up or down, or get replaced),
+downstream services can still connect to them.
+
+page 119

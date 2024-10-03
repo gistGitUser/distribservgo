@@ -1,3 +1,8 @@
 
 1) TLS mutual authentication? (also commonly referred to as two-way
                                authentication)
+2) (SLI)(SLO)(SLA)
+
+3) Prometheus, Elasticsearch, and Jaegar
+
+4) Why Use Service Discovery?

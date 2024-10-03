@@ -1,0 +1,33 @@
+
+#----------------------------------------------
+
+TraceID:      05441cd42608e81bebfc5befebb86957
+SpanID:       c5837d51382ae328
+
+Span:    log.v1.Log.Produce
+Status:   [0]
+Elapsed: 0s
+SpanKind: Server
+
+Attributes:
+  - Client=false
+  - FailFast=false
+
+MessageEvents:
+Received
+UncompressedByteSize: 15
+CompressedByteSize: 20
+
+Sent
+UncompressedByteSize: 0
+CompressedByteSize: 5
+
+
+#----------------------------------------------
+
+TraceID:      3b033803bd9984b48d7bb5232da7f9e6
+SpanID:       e75a71755bf1e0d2
+
+Span:    
+Status:   [0]
+Elapsed: 0s

@@ -1,0 +1,96 @@
+#----------------------------------------------
+
+Metric: name: grpc.io/server/received_bytes_per_rpc, type: TypeCumulativeDistribution, unit: By 
+  Labels: [{grpc_server_method }={log.v1.Log/Produce true}]
+    Value : count=1 sum=15 sum_sq_dev=0, buckets=[{1 0xc000483110} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>}]
+
+#----------------------------------------------
+
+Metric: name: grpc.io/server/received_bytes_per_rpc, type: TypeCumulativeDistribution, unit: By 
+  Labels: [{grpc_server_method }={log.v1.Log/Consume true}]
+    Value : count=1 sum=0 sum_sq_dev=0, buckets=[{1 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>}]
+
+#----------------------------------------------
+
+Metric: name: grpc.io/server/received_bytes_per_rpc, type: TypeCumulativeDistribution, unit: By 
+  Labels: [{grpc_server_method }={log.v1.Log/ConsumeStream true}]
+    Value : count=1 sum=0 sum_sq_dev=0, buckets=[{1 0xc00037f500} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>}]
+
+#----------------------------------------------
+
+Metric: name: grpc.io/server/received_bytes_per_rpc, type: TypeCumulativeDistribution, unit: By 
+  Labels: [{grpc_server_method }={log.v1.Log/ProduceStream true}]
+    Value : count=1 sum=37 sum_sq_dev=0, buckets=[{1 0xc0001c7020} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>}]
+
+#----------------------------------------------
+
+Metric: name: grpc.io/server/sent_bytes_per_rpc, type: TypeCumulativeDistribution, unit: By 
+  Labels: [{grpc_server_method }={log.v1.Log/Produce true}]
+    Value : count=1 sum=0 sum_sq_dev=0, buckets=[{1 0xc000483080} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>}]
+
+#----------------------------------------------
+
+Metric: name: grpc.io/server/sent_bytes_per_rpc, type: TypeCumulativeDistribution, unit: By 
+  Labels: [{grpc_server_method }={log.v1.Log/Consume true}]
+    Value : count=1 sum=15 sum_sq_dev=0, buckets=[{1 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>}]
+
+#----------------------------------------------
+
+Metric: name: grpc.io/server/sent_bytes_per_rpc, type: TypeCumulativeDistribution, unit: By 
+  Labels: [{grpc_server_method }={log.v1.Log/ConsumeStream true}]
+    Value : count=1 sum=37 sum_sq_dev=0, buckets=[{1 0xc00037f4d0} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>}]
+
+#----------------------------------------------
+
+Metric: name: grpc.io/server/sent_bytes_per_rpc, type: TypeCumulativeDistribution, unit: By 
+  Labels: [{grpc_server_method }={log.v1.Log/ProduceStream true}]
+    Value : count=1 sum=2 sum_sq_dev=0, buckets=[{1 0xc0001c6f90} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>}]
+
+#----------------------------------------------
+
+Metric: name: grpc.io/server/server_latency, type: TypeCumulativeDistribution, unit: ms 
+  Labels: [{grpc_server_method }={log.v1.Log/Produce true}]
+    Value : count=1 sum=0.333905 sum_sq_dev=0, buckets=[{0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {1 0xc000483140} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>}]
+
+#----------------------------------------------
+
+Metric: name: grpc.io/server/server_latency, type: TypeCumulativeDistribution, unit: ms 
+  Labels: [{grpc_server_method }={log.v1.Log/Consume true}]
+    Value : count=1 sum=0.110013 sum_sq_dev=0, buckets=[{0 <nil>} {0 <nil>} {0 <nil>} {1 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>}]
+
+#----------------------------------------------
+
+Metric: name: grpc.io/server/server_latency, type: TypeCumulativeDistribution, unit: ms 
+  Labels: [{grpc_server_method }={log.v1.Log/ConsumeStream true}]
+    Value : count=1 sum=0.373649 sum_sq_dev=0, buckets=[{0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {1 0xc00037f530} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>}]
+
+#----------------------------------------------
+
+Metric: name: grpc.io/server/server_latency, type: TypeCumulativeDistribution, unit: ms 
+  Labels: [{grpc_server_method }={log.v1.Log/ProduceStream true}]
+    Value : count=1 sum=0.824962 sum_sq_dev=0, buckets=[{0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {1 0xc0001c70b0} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>} {0 <nil>}]
+
+#----------------------------------------------
+
+Metric: name: grpc.io/server/completed_rpcs, type: TypeCumulativeInt64, unit: 1 
+  Labels: [{grpc_server_method }={log.v1.Log/Produce true} {grpc_server_status }={OK true}]
+    Value : value=1
+
+#----------------------------------------------
+
+Metric: name: grpc.io/server/completed_rpcs, type: TypeCumulativeInt64, unit: 1 
+  Labels: [{grpc_server_method }={log.v1.Log/Consume true} {grpc_server_status }={OK true}]
+    Value : value=1
+
+#----------------------------------------------
+
+Metric: name: grpc.io/server/completed_rpcs, type: TypeCumulativeInt64, unit: 1 
+  Labels: [{grpc_server_method }={log.v1.Log/ConsumeStream true} {grpc_server_status }={UNAVAILABLE true}]
+    Value : value=1
+
+#----------------------------------------------
+
+Metric: name: grpc.io/server/completed_rpcs, type: TypeCumulativeInt64, unit: 1 
+  Labels: [{grpc_server_method }={log.v1.Log/ProduceStream true} {grpc_server_status }={CANCELLED true}]
+    Value : value=1
+

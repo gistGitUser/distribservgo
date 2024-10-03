@@ -1,0 +1,49 @@
+
+#----------------------------------------------
+
+TraceID:      670e028eb5d0ad5ba92e66ec45e451cc
+SpanID:       decb4673562ad9a5
+
+Span:    log.v1.Log.Produce
+Status:  nobody not permitted to produce to * [7]
+Elapsed: 0s
+SpanKind: Server
+
+Attributes:
+  - FailFast=false
+  - Client=false
+
+MessageEvents:
+Received
+UncompressedByteSize: 15
+CompressedByteSize: 20
+
+
+#----------------------------------------------
+
+TraceID:      5626da3f6cc6efadf048ef59d344168e
+SpanID:       6fb74005e80dd87a
+
+Span:    log.v1.Log.Consume
+Status:  nobody not permitted to consume to * [7]
+Elapsed: 0s
+SpanKind: Server
+
+Attributes:
+  - Client=false
+  - FailFast=false
+
+MessageEvents:
+Received
+UncompressedByteSize: 0
+CompressedByteSize: 5
+
+
+#----------------------------------------------
+
+TraceID:      43798c37fa0016f4aecb6d51f80000c2
+SpanID:       00a33a9779f1d64f
+
+Span:    
+Status:   [0]
+Elapsed: 0s
