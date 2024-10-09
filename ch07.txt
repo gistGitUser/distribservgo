@@ -16,4 +16,191 @@ discovering and connecting to its database. This way, even if
 the upstream services change (scale up or down, or get replaced),
 downstream services can still connect to them.
 
-page 119
+Instead of using service discovery, some developers put
+load balancers in front of their services so that the load
+balancers provide static IPs. But for server-to-server
+communication, where you control the servers and you don’t
+need a load balancer to act as a "trust boundary" between
+clients and servers, use service discovery instead. Load
+balancers add cost, increase latency, introduce single points
+of failure, and need updates as services scale up and
+down. If you manage tens or hundreds of microservices, then
+not using service discovery means you also have to manage
+ tens or hundreds of load balancers and DNS records.
+
+For a distributed service like ours, using a load balancer
+would force us to depend on a load-balancer service like
+nginx or the various cloud load balancers like AWS’s ELB
+or Google Cloud’s Load Balancer. This would increase our
+operational burden, infrastructure costs, and latency.
+
+In our system, we have two service-discovery problems to solve:
+• How will the servers in our cluster discover each other?
+• How will the clients discover the servers?
+
+Embed Service Discovery
+
+When you have an application that needs to talk to a
+service, the tool you use for service discovery needs to
+perform the following tasks:
+
+• Manage a registry of services containing info such as
+their IPs and ports;
+• Help services find other services using the registry;
+• Health check service instances and remove them if they’re
+ not well; and
+• Deregister services when they go offline.
+
+In this architecture, users of your service run two clusters:
+one for your service and one for your service discovery.
+The benefit of using a service-discovery service is that
+you don’t have to build service discovery yourself.
+burden - груз, бремя
+
+The people building distributed services
+didn’t have the libraries they needed to embed service
+discovery into their services, and users didn’t have other
+options.
+
+Using Serf to embed service discovery into your services
+means that you don’t have to implement service discovery
+yourself and your users don’t have to run an extra cluster.
+It’s a win-win.
+
+Here are some other benefits of building our service
+ with Serf:
+• In the early days of building a service, Serf is faster
+ to set up and build our service against than having to
+ set up a separate service.
+• It’s easier to move from Serf to a stand-alone service than
+ to move from a stand-alone service to Serf, so we still
+  have both options open.
+• Our service will be easier and more flexible to deploy,
+ making our service more accessible.
+
+Discover Services with Serf
+
+В данном контексте термин gossip относится к одноименному
+протоколу общения между узлами в распределенных системах.
+Gossip-протоколы работают по аналогии с социальными
+сплетнями (англ. "gossip" — сплетня), где информация
+распространяется постепенно от одного узла к другому.
+Основные особенности этого протокола:
+
+Децентрализация: В gossip-протоколе нет центрального узла,
+который контролировал бы распространение информации.
+Узлы системы равноправны и передают данные друг другу.
+
+Эффективное распространение информации: Каждый узел
+отправляет информацию о своем состоянии или о событиях
+случайно выбранным соседям, которые затем передают её
+дальше. Это помогает постепенно распространить
+данные по всей сети.
+
+Надежность и отказоустойчивость: Gossip-протоколы хорошо
+работают в условиях отказов отдельных узлов или
+неустойчивых сетевых подключений. Даже если часть узлов
+недоступна, информация всё равно может достичь большинства
+узлов через другие пути.
+
+Легковесность: Протоколы данного типа требуют минимальных
+ресурсов для поддержания связи между узлами, что делает
+их идеальными для больших распределенных систем, где узлы
+ постоянно подключаются и отключаются.
+
+Таким образом, в случае с Serf, gossip-протокол
+ используется для поддержания актуальной информации о
+ состоянии кластера и его узлах (например, о
+ подключении/отключении узлов) с минимальными затратами
+ ресурсов и без центрального управления.
+
+Serf maintains cluster membership by using an efficient, lightweight gossip
+protocol to communicate between the service’s nodes. Unlike service registry
+projects like ZooKeeper and Consul, Serf doesn’t have a central-registry
+architectural style. Instead, each instance of your service in the cluster runs
+as a Serf node.
+
+These nodes exchange messages with each other in the same
+way a zombie apocalypse might occur: one infected zombie soon spreads to
+infect everyone else. With Serf, instead of a spreading zombie virus, you’re
+spreading information about the nodes in your cluster. You listen to Serf for
+messages about changes in the cluster and then handle them accordingly.
+
+To implement service discovery with Serf we need to:
+
+1. Create a Serf node on each server.
+
+2. Configure each Serf node with an address to listen on and accept connec-
+tions from other Serf nodes.
+
+3. Configure each Serf node with addresses of other Serf nodes and join their
+cluster.
+
+4. Handle Serf’s cluster discovery events, such as when a node joins or fails
+in the cluster.
+
+Serf has a lot of configurable parameters, but the five
+parameters you’ll typically use are:
+/*
+NodeName—the node name acts as the node’s unique identifier
+across the Serf cluster. If you don’t set the node name,
+Serf uses the hostname
+
+• BindAddr and BindPort—Serf listens on this address
+and port for gossiping.
+
+Tags—Serf shares these tags to the other nodes in the cluster and should
+use these tags for simple data that informs the cluster how to handle this
+node. For example, Consul shares each node’s RPC address with Serf
+tags, and once they know each other’s RPC address, they can make RPCs
+to each other. Consul shares whether the node is a voter or non-voter,
+which changes the node’s role in the Raft cluster.
+
+EventCh—the event channel is how you’ll receive Serf’s events when a node
+joins or leaves the cluster. If you want a snapshot of the members at any
+point in time, you can call Serf’s Members() method.
+
+StartJoinAddrs—when you have an existing cluster and you create a new node
+that you want to add to that cluster, you need to point your new node to
+at least one of the nodes now in the cluster. After the new node connects
+to one of those nodes in the existing cluster, it’ll learn about the rest of
+the nodes, and vice versa (the existing nodes learn about the new node).
+
+The StartJoinAddrs field is how you configure new nodes to join an existing
+cluster. You set the field to the addresses of nodes in the cluster, and
+Serf’s gossip protocol takes care of the rest to join your node to the cluster.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
